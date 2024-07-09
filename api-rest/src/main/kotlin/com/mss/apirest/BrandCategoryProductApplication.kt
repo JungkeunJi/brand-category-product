@@ -1,4 +1,4 @@
-package com.mss.brandcategoryproduct
+package com.mss.apirest
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

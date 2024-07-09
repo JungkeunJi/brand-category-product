@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 plugins {
     id("org.springframework.boot") version "3.3.1"
     id("io.spring.dependency-management") version "1.1.5"
@@ -6,36 +8,43 @@ plugins {
     kotlin("plugin.spring") version "1.9.24"
 }
 
-group = "com.mss"
-version = "0.0.1-SNAPSHOT"
-
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
-repositories {
-    mavenCentral()
-}
+allprojects {
+    group = "com.mss"
+    version = "0.0.1-SNAPSHOT"
 
-dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    runtimeOnly("com.h2database:h2")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-}
-
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.addAll("-Xjsr305=strict")
+    repositories {
+        mavenCentral()
     }
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
+subprojects {
+    apply(plugin = "org.springframework.boot")
+    apply(plugin = "io.spring.dependency-management")
+    apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "org.jetbrains.kotlin.plugin.spring")
+    apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
+
+    tasks.withType<BootJar> {
+        this.enabled = false
+    }
+
+    tasks.getByName<Jar>("jar") {
+        this.enabled = false
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
+
+    kotlin {
+        compilerOptions {
+            freeCompilerArgs.addAll("-Xjsr305=strict")
+        }
+    }
 }
