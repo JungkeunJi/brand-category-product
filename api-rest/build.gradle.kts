@@ -7,7 +7,6 @@ tasks.withType<BootJar> {
 dependencies {
     implementation(project(":application"))
     implementation(project(":domain"))
-    implementation(project(":infrastructure"))
     implementation("org.springframework.boot:spring-boot-starter-web")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

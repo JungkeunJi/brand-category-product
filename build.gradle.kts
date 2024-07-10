@@ -30,6 +30,10 @@ subprojects {
     apply(plugin = "org.jetbrains.kotlin.plugin.spring")
     apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
 
+    dependencies {
+        runtimeOnly("com.h2database:h2")
+    }
+
     tasks.withType<BootJar> {
         this.enabled = false
     }
@@ -47,4 +51,8 @@ subprojects {
             freeCompilerArgs.addAll("-Xjsr305=strict")
         }
     }
+}
+
+tasks.withType<BootJar> {
+    this.enabled = false
 }
