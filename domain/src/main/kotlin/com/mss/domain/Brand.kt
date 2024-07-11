@@ -8,8 +8,11 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(
-    name = "brand", indexes = [
-        Index(name = "idx_name", columnList = "name"),
+    name = "brand", uniqueConstraints = [
+        UniqueConstraint(
+            name = "uk_brand_name",
+            columnNames = ["name"]
+        )
     ]
 )
 @SQLRestriction("deleted_at is NULL")

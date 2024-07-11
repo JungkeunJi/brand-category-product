@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController
 class CategoryProductController(
     private val categoryProductQuery: CategoryProductQuery
 ) {
-    @GetMapping("categories/lowest-price")
+    @GetMapping("lowest-price")
     fun findAllCategoriesLowestPrice(): Map<String, String> {
         return emptyMap()
     }
 
-    @GetMapping("categories/{categoryName}/price-range")
-    fun getCategoryPriceRange(@PathVariable categoryName: String): Map<String, String> {
+    @GetMapping("{name}/price-range")
+    fun getCategoryPriceRange(@PathVariable name: String): Map<String, String> {
         return emptyMap()
     }
 }
