@@ -9,16 +9,14 @@ spring:
     username: root
     password:
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create
-    show-sql: true
     properties:
       hibernate:
         format_sql: true
+        show_sql: true
   h2:
     console:
       enabled: true
       path: /h2-console
-logging:
-  level:
-    org.hibernate.SQL: debug
