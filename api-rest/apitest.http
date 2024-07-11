@@ -1,0 +1,15 @@
+GET http://localhost:8080/api/categories/lowest-price
+
+###
+GET http://localhost:8080/api/brands/lowest-total-price
+
+###
+POST http://localhost:8080/api/brands
+Content-Type: application/json
+
+{
+"name": "a"
+}
+
+###
+DELETE http://localhost:8080/api/brands/hi

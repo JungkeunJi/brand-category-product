@@ -4,7 +4,6 @@ import com.mss.application.BrandProductQuery
 import com.mss.application.param.BrandCreateParam
 import com.mss.application.param.BrandProductUpdateParam
 import com.mss.application.response.BrandResponse
-import com.mss.domain.Brand
 import org.springframework.web.bind.annotation.*
 
 @RestController
