@@ -1,6 +1,6 @@
 package com.mss.domain.exception
 
-open class CustomException(
+abstract class CustomException(
     open val data: String?,
     open val errorCode: ErrorCode
 ) : RuntimeException()

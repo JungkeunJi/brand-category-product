@@ -16,7 +16,7 @@ class CategoryProductController(
     // 구현 1
     @GetMapping("lowest-price")
     fun findAllCategoriesLowestPrice(): CategoryProductResponse {
-        return emptyMap()
+        return categoryProductQuery.findAllCategoriesLowestPrice()
     }
 
     // 구현 3
