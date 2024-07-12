@@ -5,8 +5,7 @@ GET http://localhost:8080/api/categories/lowest-price
 GET http://localhost:8080/api/brands/lowest-total-price
 
 ### 구현 3. 카테고리 이름으로 최저, 최고 가격 브랜드와 상품 가격을 조회하는 API
-@category = 하이
-GET http://localhost:8080/api/categories/{{category}}/price-range
+GET http://localhost:8080/api/categories/price-range?name=상의
 
 ###
 POST http://localhost:8080/api/brands

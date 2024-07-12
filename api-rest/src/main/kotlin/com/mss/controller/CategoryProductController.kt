@@ -4,8 +4,8 @@ import com.mss.application.CategoryProductQuery
 import com.mss.application.model.response.CategoryProductResponse
 import com.mss.application.model.response.CategoryResponse
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -20,8 +20,8 @@ class CategoryProductController(
     }
 
     // 구현 3. 카테고리 이름으로 최저, 최고 가격 브랜드와 상품 가격을 조회하는 API
-    @GetMapping("{name}/price-range")
-    fun getCategoryPriceRange(@PathVariable name: String): CategoryResponse.PriceRange {
+    @GetMapping("price-range")
+    fun getCategoryPriceRange(@RequestParam name: String): CategoryResponse.PriceRange {
         return categoryProductQuery.getCategoryPriceRange(name)
     }
 }
