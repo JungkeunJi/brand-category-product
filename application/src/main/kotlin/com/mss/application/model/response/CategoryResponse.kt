@@ -1,6 +1,6 @@
 package com.mss.application.model.response
 
-import com.mss.application.model.BrandProduct
+import com.mss.application.model.Product
 
 interface CategoryResponse {
     val id: Long
@@ -9,7 +9,7 @@ interface CategoryResponse {
     data class PriceRange(
         override val id: Long,
         override val name: String,
-        val lowestPriceProducts: List<BrandProduct>,
-        val highestPriceProducts: List<BrandProduct>,
+        val lowestPriceProducts: List<Product.Brand>,
+        val highestPriceProducts: List<Product.Brand>,
     ) : CategoryResponse
 }
