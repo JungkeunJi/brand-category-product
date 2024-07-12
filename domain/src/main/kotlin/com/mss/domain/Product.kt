@@ -7,10 +7,22 @@ import org.hibernate.annotations.SQLRestriction
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "product")
+@Table(
+    name = "product", uniqueConstraints = [
+        UniqueConstraint(name = "uk_brand_category", columnNames = ["brand_id", "category_id"])
+    ]
+)
 @SQLRestriction("deleted_at is NULL")
 @SQLDelete(sql = "UPDATE product SET deleted_at = NOW() WHERE id = ?")
 class Product private constructor(
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id")
+    val brand: Brand,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    val category: Category,
+
     @Column(name = "price", nullable = false)
     var price: Int
 ) : BaseEntity() {
@@ -22,8 +34,8 @@ class Product private constructor(
     val deletedAt: LocalDateTime? = null
 
     companion object {
-        fun create(price: Int): Product {
-            return Product(price)
+        fun create(brand: Brand, category: Category, price: Int): Product {
+            return Product(brand, category, price)
         }
     }
 }
