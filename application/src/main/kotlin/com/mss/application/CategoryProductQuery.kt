@@ -1,7 +1,7 @@
 package com.mss.application
 
 import com.mss.application.model.CategoryProduct
-import com.mss.application.model.Product
+import com.mss.application.model.ProductPrice
 import com.mss.application.model.response.CategoryProductResponse
 import com.mss.application.model.response.CategoryResponse
 import com.mss.domain.Category
@@ -45,9 +45,9 @@ class CategoryProductQuery(
         val highestPrice = products.maxBy { it.price }.price
 
         val lowestPriceProducts = products.filter { it.price == lowestPrice }
-            .map { Product.Brand(id = it.id, price = it.price, brandId = it.brand.id, brandName = it.brand.name) }
+            .map { ProductPrice.Brand(id = it.id, price = it.price, brandId = it.brand.id, brandName = it.brand.name) }
         val highestPriceProducts = products.filter { it.price == highestPrice }
-            .map { Product.Brand(id = it.id, price = it.price, brandId = it.brand.id, brandName = it.brand.name) }
+            .map { ProductPrice.Brand(id = it.id, price = it.price, brandId = it.brand.id, brandName = it.brand.name) }
 
         return CategoryResponse.PriceRange(
             id = category.id,
@@ -63,7 +63,7 @@ class CategoryProductQuery(
             CategoryProduct(
                 categoryId = lowestPriceProductByCategory.category.id,
                 categoryName = lowestPriceProductByCategory.category.name,
-                product = Product.Brand(
+                product = ProductPrice.Brand(
                     id = lowestPriceProductByCategory.id,
                     price = lowestPriceProductByCategory.price,
                     brandId = lowestPriceProductByCategory.brand.id,

@@ -1,6 +1,6 @@
 package com.mss.application.model
 
-sealed interface Product {
+sealed interface ProductPrice {
     val id: Long
     val price: Int
 
@@ -9,12 +9,12 @@ sealed interface Product {
         override val price: Int,
         val brandId: Long,
         val brandName: String
-    ) : Product
+    ) : ProductPrice
 
     data class Category(
         override val id: Long,
         override val price: Int,
         val categoryId: Long,
         val categoryName: String
-    ) : Product
+    ) : ProductPrice
 }

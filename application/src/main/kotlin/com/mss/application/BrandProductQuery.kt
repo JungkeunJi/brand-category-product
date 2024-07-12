@@ -1,6 +1,6 @@
 package com.mss.application
 
-import com.mss.application.model.Product
+import com.mss.application.model.ProductPrice
 import com.mss.application.model.response.BrandResponse
 import com.mss.domain.Brand
 import com.mss.domain.exception.ErrorCode
@@ -28,7 +28,7 @@ class BrandProductQuery(
     private fun findLowestTotalPriceBrandIn(brands: List<Brand>): BrandResponse.Detail? {
         return productRepository.findAllByBrandIn(brands).groupBy { it.brand }.map { (brand, products) ->
             val categoryProducts = products.map {
-                Product.Category(
+                ProductPrice.Category(
                     id = it.id,
                     price = it.price,
                     categoryId = it.category.id,
