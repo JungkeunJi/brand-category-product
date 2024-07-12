@@ -7,12 +7,46 @@ GET http://localhost:8080/api/brands/lowest-total-price
 ### 구현 3. 카테고리 이름으로 최저, 최고 가격 브랜드와 상품 가격을 조회하는 API
 GET http://localhost:8080/api/categories/price-range?name=상의
 
-###
+### 구현 4. 브랜드 및 상품 생성
 POST http://localhost:8080/api/brands
 Content-Type: application/json
 
 {
-"name": "a"
+  "name": "Z",
+  "categoryProducts": [
+    {
+      "categoryName": "상의",
+      "productPrice": 1000
+    },
+    {
+      "categoryName": "아우터",
+      "productPrice": 2000
+    },
+    {
+      "categoryName": "바지",
+      "productPrice": 3000
+    },
+    {
+      "categoryName": "스니커즈",
+      "productPrice": 4000
+    },
+    {
+      "categoryName": "가방",
+      "productPrice": 5000
+    },
+    {
+      "categoryName": "모자",
+      "productPrice": 6000
+    },
+    {
+      "categoryName": "양말",
+      "productPrice": 7000
+    },
+    {
+      "categoryName": "액세서리",
+      "productPrice": 8000
+    }
+  ]
 }
 
 ###
