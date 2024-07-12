@@ -1,4 +1,4 @@
-package com.mss.application.param
+package com.mss.application.model.param
 
 data class CategoryProductParam(
     val categoryName: String,

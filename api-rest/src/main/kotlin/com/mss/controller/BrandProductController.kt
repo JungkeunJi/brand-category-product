@@ -1,9 +1,9 @@
 package com.mss.controller
 
 import com.mss.application.BrandProductQuery
-import com.mss.application.param.BrandCreateParam
-import com.mss.application.param.BrandProductUpdateParam
-import com.mss.application.response.BrandResponse
+import com.mss.application.model.param.BrandCreateParam
+import com.mss.application.model.param.BrandProductUpdateParam
+import com.mss.application.model.response.BrandResponse
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -11,24 +11,28 @@ import org.springframework.web.bind.annotation.*
 class BrandProductController(
     private val brandProductQuery: BrandProductQuery
 ) {
+    // 구현 2
     @GetMapping("lowest-total-price")
-    fun findLowestTotalPriceBrand(): Map<String, String> {
+    fun findLowestTotalPriceBrand(): BrandResponse.Detail {
         return emptyMap()
     }
 
+    // 구현 4
     @PostMapping
-    fun createBrand(@RequestBody brandCreateParam: BrandCreateParam): BrandResponse {
-        return BrandResponse(0L, "", emptyList())
+    fun createBrand(@RequestBody brandCreateParam: BrandCreateParam): BrandResponse.Base {
+        return BrandResponse.Base(0L, "", emptyList())
     }
 
+    // 구현 4
     @PutMapping("{name}")
     fun updateBrand(
         @PathVariable("name") name: String,
         @RequestBody brandProductUpdateParam: BrandProductUpdateParam
-    ): BrandResponse {
-        return BrandResponse(0L, "", emptyList())
+    ): BrandResponse.Base {
+        return BrandResponse.Base(0L, "", emptyList())
     }
 
+    // 구현 4
     @DeleteMapping("{name}")
     fun deleteBrand(@PathVariable("name") name: String) {
 
