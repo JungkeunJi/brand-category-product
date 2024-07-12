@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RestController
 class CategoryProductController(
     private val categoryProductQuery: CategoryProductQuery
 ) {
-    // 구현 1
+    // 구현 1. 카테고리 별 최저가격 브랜드와 상품 가격, 총액을 조회하는 API
     @GetMapping("lowest-price")
     fun findAllCategoriesLowestPrice(): CategoryProductResponse {
         return categoryProductQuery.findAllCategoriesLowestPrice()
     }
 
-    // 구현 3
+    // 구현 3. 카테고리 이름으로 최저, 최고 가격 브랜드와 상품 가격을 조회하는 API
     @GetMapping("{name}/price-range")
     fun getCategoryPriceRange(@PathVariable name: String): CategoryResponse.PriceRange {
-        return CategoryResponse.PriceRange(0, "", emptyList(), emptyList())
+        return categoryProductQuery.getCategoryPriceRange(name)
     }
 }

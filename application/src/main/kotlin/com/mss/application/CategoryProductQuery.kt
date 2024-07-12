@@ -3,6 +3,7 @@ package com.mss.application
 import com.mss.application.model.CategoryProduct
 import com.mss.application.model.Product
 import com.mss.application.model.response.CategoryProductResponse
+import com.mss.application.model.response.CategoryResponse
 import com.mss.domain.Category
 import com.mss.domain.exception.ErrorCode
 import com.mss.domain.exception.NotFoundDataException
@@ -29,6 +30,30 @@ class CategoryProductQuery(
         return CategoryProductResponse(
             categoryProducts = categoryProducts,
             totalPrice = categoryProducts.sumOf { it.product.price }
+        )
+    }
+
+    fun getCategoryPriceRange(name: String): CategoryResponse.PriceRange {
+        val category =
+            categoryRepository.findByName(name) ?: throw NotFoundDataException(errorCode = ErrorCode.NOT_FOUND_CATEGORY)
+
+        val products = productRepository.findAllByCategoryIn(listOf(category))
+
+        if (products.isEmpty()) throw NotFoundDataException(errorCode = ErrorCode.NOT_FOUND_PRODUCT)
+
+        val lowestPrice = products.minBy { it.price }.price
+        val highestPrice = products.maxBy { it.price }.price
+
+        val lowestPriceProducts = products.filter { it.price == lowestPrice }
+            .map { Product.Brand(id = it.id, price = it.price, brandId = it.brand.id, brandName = it.brand.name) }
+        val highestPriceProducts = products.filter { it.price == highestPrice }
+            .map { Product.Brand(id = it.id, price = it.price, brandId = it.brand.id, brandName = it.brand.name) }
+
+        return CategoryResponse.PriceRange(
+            id = category.id,
+            name = category.name,
+            lowestPriceProducts = lowestPriceProducts,
+            highestPriceProducts = highestPriceProducts
         )
     }
 
