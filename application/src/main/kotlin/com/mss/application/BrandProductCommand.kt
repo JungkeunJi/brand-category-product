@@ -82,4 +82,11 @@ class BrandProductCommand(
             }
         )
     }
+
+    fun deleteBrand(name: String) {
+        val brand =
+            brandRepository.findByName(name) ?: throw NotFoundDataException(errorCode = ErrorCode.NOT_FOUND_BRAND)
+
+        brandRepository.delete(brand)
+    }
 }

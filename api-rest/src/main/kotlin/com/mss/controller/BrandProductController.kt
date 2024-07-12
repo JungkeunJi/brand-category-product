@@ -37,6 +37,6 @@ class BrandProductController(
     // 구현 4. 브랜드 삭제
     @DeleteMapping("{name}")
     fun deleteBrand(@PathVariable("name") name: String) {
-
+        brandProductCommand.deleteBrand(name)
     }
 }

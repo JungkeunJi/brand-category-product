@@ -90,5 +90,5 @@ Content-Type: application/json
   ]
 }
 
-###
-DELETE http://localhost:8080/api/brands/hi
+### 구현 4. 브랜드 삭제
+DELETE http://localhost:8080/api/brands/A

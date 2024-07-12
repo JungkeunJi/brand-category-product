@@ -13,5 +13,4 @@ interface ProductRepository : JpaRepository<Product, Long> {
 
     @EntityGraph(attributePaths = ["brand", "category"])
     fun findAllByBrandIn(brands: List<Brand>): List<Product>
-
 }
