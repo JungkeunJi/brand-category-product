@@ -14,7 +14,7 @@ class BrandProductController(
     // 구현 2
     @GetMapping("lowest-total-price")
     fun findLowestTotalPriceBrand(): BrandResponse.Detail {
-        return emptyMap()
+        return BrandResponse.Detail(0L, "", emptyList(), 0)
     }
 
     // 구현 4

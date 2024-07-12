@@ -3,6 +3,7 @@ package com.mss.application
 import com.mss.application.model.CategoryProduct
 import com.mss.application.model.Product
 import com.mss.application.model.response.CategoryProductResponse
+import com.mss.domain.Category
 import com.mss.domain.exception.ErrorCode
 import com.mss.domain.exception.NotFoundDataException
 import com.mss.domain.repository.CategoryRepository
@@ -21,20 +22,7 @@ class CategoryProductQuery(
 
         if (categories.isEmpty()) throw NotFoundDataException(errorCode = ErrorCode.NOT_FOUND_CATEGORY)
 
-        val categoryProducts =
-            productRepository.findAllByCategoryIn(categories).groupBy { it.category.id }.map { (_, products) ->
-                val lowestPriceProductByCategory = products.minBy { it.price }
-                CategoryProduct(
-                    categoryId = lowestPriceProductByCategory.category.id,
-                    categoryName = lowestPriceProductByCategory.category.name,
-                    product = Product.Brand(
-                        id = lowestPriceProductByCategory.id,
-                        price = lowestPriceProductByCategory.price,
-                        brandId = lowestPriceProductByCategory.brand.id,
-                        brandName = lowestPriceProductByCategory.brand.name
-                    )
-                )
-            }
+        val categoryProducts = findLowestPriceCategoryProducts(categories)
 
         if (categoryProducts.isEmpty()) throw NotFoundDataException(errorCode = ErrorCode.NOT_FOUND_PRODUCT)
 
@@ -42,5 +30,21 @@ class CategoryProductQuery(
             categoryProducts = categoryProducts,
             totalPrice = categoryProducts.sumOf { it.product.price }
         )
+    }
+
+    private fun findLowestPriceCategoryProducts(categories: List<Category>): List<CategoryProduct> {
+        return productRepository.findAllByCategoryIn(categories).groupBy { it.category.id }.map { (_, products) ->
+            val lowestPriceProductByCategory = products.sortedByDescending { it.brand.id }.minBy { it.price }
+            CategoryProduct(
+                categoryId = lowestPriceProductByCategory.category.id,
+                categoryName = lowestPriceProductByCategory.category.name,
+                product = Product.Brand(
+                    id = lowestPriceProductByCategory.id,
+                    price = lowestPriceProductByCategory.price,
+                    brandId = lowestPriceProductByCategory.brand.id,
+                    brandName = lowestPriceProductByCategory.brand.name
+                )
+            )
+        }
     }
 }

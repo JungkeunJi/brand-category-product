@@ -22,6 +22,6 @@ class CategoryProductController(
     // 구현 3
     @GetMapping("{name}/price-range")
     fun getCategoryPriceRange(@PathVariable name: String): CategoryResponse.PriceRange {
-        return emptyMap()
+        return CategoryResponse.PriceRange(0, "", emptyList(), emptyList())
     }
 }
