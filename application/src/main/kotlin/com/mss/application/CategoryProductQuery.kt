@@ -1,5 +1,7 @@
 package com.mss.application
 
+import com.mss.application.model.CategoryProduct
+import com.mss.application.model.Product
 import com.mss.application.model.response.CategoryProductResponse
 import com.mss.domain.exception.ErrorCode
 import com.mss.domain.exception.NotFoundDataException
@@ -19,6 +21,26 @@ class CategoryProductQuery(
 
         if (categories.isEmpty()) throw NotFoundDataException(errorCode = ErrorCode.NOT_FOUND_CATEGORY)
 
-        productRepository.findAllByCategoryIn(categories)
+        val categoryProducts =
+            productRepository.findAllByCategoryIn(categories).groupBy { it.category.id }.map { (_, products) ->
+                val lowestPriceProductByCategory = products.minBy { it.price }
+                CategoryProduct(
+                    categoryId = lowestPriceProductByCategory.category.id,
+                    categoryName = lowestPriceProductByCategory.category.name,
+                    product = Product.Brand(
+                        id = lowestPriceProductByCategory.id,
+                        price = lowestPriceProductByCategory.price,
+                        brandId = lowestPriceProductByCategory.brand.id,
+                        brandName = lowestPriceProductByCategory.brand.name
+                    )
+                )
+            }
+
+        if (categoryProducts.isEmpty()) throw NotFoundDataException(errorCode = ErrorCode.NOT_FOUND_PRODUCT)
+
+        return CategoryProductResponse(
+            categoryProducts = categoryProducts,
+            totalPrice = categoryProducts.sumOf { it.product.price }
+        )
     }
 }
