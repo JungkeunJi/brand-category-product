@@ -49,5 +49,46 @@ Content-Type: application/json
   ]
 }
 
+### 구현 4. 브랜드 및 상품 생성
+PUT http://localhost:8080/api/brands/A
+Content-Type: application/json
+
+{
+  "categoryProducts": [
+    {
+      "categoryName": "상의",
+      "productPrice": 1000
+    },
+    {
+      "categoryName": "아우터",
+      "productPrice": 2000
+    },
+    {
+      "categoryName": "바지",
+      "productPrice": 3000
+    },
+    {
+      "categoryName": "스니커즈",
+      "productPrice": 4000
+    },
+    {
+      "categoryName": "가방",
+      "productPrice": 5000
+    },
+    {
+      "categoryName": "모자",
+      "productPrice": 6000
+    },
+    {
+      "categoryName": "양말",
+      "productPrice": 7000
+    },
+    {
+      "categoryName": "액세서리",
+      "productPrice": 8000
+    }
+  ]
+}
+
 ###
 DELETE http://localhost:8080/api/brands/hi
