@@ -31,7 +31,7 @@ class BrandProductController(
         @PathVariable("name") name: String,
         @RequestBody brandProductUpdateParam: BrandProductUpdateParam
     ): BrandResponse.Base {
-        return BrandResponse.Base(0L, "", emptyList())
+        return brandProductCommand.updateBrand(name, brandProductUpdateParam)
     }
 
     // 구현 4. 브랜드 삭제

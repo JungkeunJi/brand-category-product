@@ -22,6 +22,17 @@ class Validator(
         requireAllCategories(categoryNames)
     }
 
+    fun validateUpdateProducts(categoryNames: List<String>) {
+        requireDistinctCategoryNames(categoryNames)
+        requireCategoryContains(categoryNames)
+    }
+
+    private fun requireCategoryContains(categoryNames: List<String>) {
+        val existingCategories = categoryRepository.findAllByNameIn(categoryNames)
+
+        if (existingCategories.size != categoryNames.size) throw InvalidRequestException(errorCode = ErrorCode.INVALID_CATEGORY_NAME_NOT_EXISTING)
+    }
+
     private fun requireAllCategories(categoryNames: List<String>) {
         val allCategoryNames = categoryRepository.findAll().map { it.name }
 

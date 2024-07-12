@@ -33,6 +33,10 @@ class Product private constructor(
     @Column(name = "deleted_at")
     val deletedAt: LocalDateTime? = null
 
+    fun updatePrice(price: Int) {
+        this.price = price
+    }
+
     companion object {
         fun create(brand: Brand, category: Category, price: Int): Product {
             return Product(brand, category, price)

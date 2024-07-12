@@ -2,9 +2,12 @@ package com.mss.application
 
 import com.mss.application.model.ProductPrice
 import com.mss.application.model.param.BrandCreateParam
+import com.mss.application.model.param.BrandProductUpdateParam
 import com.mss.application.model.response.BrandResponse
 import com.mss.domain.Brand
 import com.mss.domain.Product
+import com.mss.domain.exception.ErrorCode
+import com.mss.domain.exception.NotFoundDataException
 import com.mss.domain.repository.BrandRepository
 import com.mss.domain.repository.CategoryRepository
 import com.mss.domain.repository.ProductRepository
@@ -24,10 +27,10 @@ class BrandProductCommand(
         validator.validateCreateBrand(brandCreateParam.name)
         val savedBrand = brandRepository.save(Brand.create(brandCreateParam.name))
 
-        val categoryProductParamMap = brandCreateParam.categoryProducts.associate { it.categoryName to it.productPrice }
-        val categoryNames = categoryProductParamMap.keys.toList()
+        val categoryNames = brandCreateParam.categoryProducts.map { it.categoryName }
         validator.validateCreateProducts(categoryNames)
 
+        val categoryProductParamMap = brandCreateParam.categoryProducts.associate { it.categoryName to it.productPrice }
         val products = categoryRepository.findAllByNameIn(categoryNames).map { category ->
             Product.create(
                 savedBrand,
@@ -41,6 +44,35 @@ class BrandProductCommand(
             id = savedBrand.id,
             name = savedBrand.name,
             categoryProducts = savedProducts.map {
+                ProductPrice.Category(
+                    id = it.id,
+                    price = it.price,
+                    categoryId = it.category.id,
+                    categoryName = it.category.name
+                )
+            }
+        )
+    }
+
+    fun updateBrand(name: String, brandProductUpdateParam: BrandProductUpdateParam): BrandResponse.Base {
+        val brand =
+            brandRepository.findByName(name) ?: throw NotFoundDataException(errorCode = ErrorCode.NOT_FOUND_BRAND)
+
+        val categoryNames = brandProductUpdateParam.categoryProducts.map { it.categoryName }
+        validator.validateUpdateProducts(categoryNames)
+
+        val categoryProductParamMap =
+            brandProductUpdateParam.categoryProducts.associate { it.categoryName to it.productPrice }
+        val products = productRepository.findAllByBrandIn(listOf(brand))
+
+        products.forEach { product ->
+            categoryProductParamMap[product.category.name]?.let { product.updatePrice(it) }
+        }
+
+        return BrandResponse.Base(
+            id = brand.id,
+            name = brand.name,
+            categoryProducts = products.map {
                 ProductPrice.Category(
                     id = it.id,
                     price = it.price,
