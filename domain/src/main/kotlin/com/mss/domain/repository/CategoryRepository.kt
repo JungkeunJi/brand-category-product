@@ -11,5 +11,6 @@ interface CategoryRepository : JpaRepository<Category, Long> {
     @EntityGraph(attributePaths = ["products", "products.brand"])
     fun findByName(name: String): Category?
 
+    @EntityGraph(attributePaths = ["products", "products.brand"])
     fun findAllByNameIn(names: List<String>): List<Category>
 }

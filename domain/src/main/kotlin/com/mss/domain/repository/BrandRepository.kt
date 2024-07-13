@@ -8,5 +8,6 @@ interface BrandRepository : JpaRepository<Brand, Long> {
     @EntityGraph(attributePaths = ["products", "products.category"])
     override fun findAll(): List<Brand>
 
+    @EntityGraph(attributePaths = ["products", "products.category"])
     fun findByName(name: String): Brand?
 }

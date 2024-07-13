@@ -6,7 +6,6 @@ import com.mss.domain.Brand
 import com.mss.domain.exception.ErrorCode
 import com.mss.domain.exception.NotFoundDataException
 import com.mss.domain.repository.BrandRepository
-import com.mss.domain.repository.ProductRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
