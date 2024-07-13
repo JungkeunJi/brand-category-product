@@ -8,15 +8,13 @@ import com.mss.domain.Category
 import com.mss.domain.exception.ErrorCode
 import com.mss.domain.exception.NotFoundDataException
 import com.mss.domain.repository.CategoryRepository
-import com.mss.domain.repository.ProductRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
 class CategoryProductQuery(
-    private val categoryRepository: CategoryRepository,
-    private val productRepository: ProductRepository
+    private val categoryRepository: CategoryRepository
 ) {
     fun findAllCategoriesLowestPrice(): CategoryProductResponse {
         val categories = categoryRepository.findAll()
@@ -37,16 +35,14 @@ class CategoryProductQuery(
         val category =
             categoryRepository.findByName(name) ?: throw NotFoundDataException(errorCode = ErrorCode.NOT_FOUND_CATEGORY)
 
-        val products = productRepository.findAllByCategoryIn(listOf(category))
+        if (category.products.isEmpty()) throw NotFoundDataException(errorCode = ErrorCode.NOT_FOUND_PRODUCT)
 
-        if (products.isEmpty()) throw NotFoundDataException(errorCode = ErrorCode.NOT_FOUND_PRODUCT)
+        val lowestPrice = category.products.minBy { it.price }.price
+        val highestPrice = category.products.maxBy { it.price }.price
 
-        val lowestPrice = products.minBy { it.price }.price
-        val highestPrice = products.maxBy { it.price }.price
-
-        val lowestPriceProducts = products.filter { it.price == lowestPrice }
+        val lowestPriceProducts = category.products.filter { it.price == lowestPrice }
             .map { ProductPrice.Brand(id = it.id, price = it.price, brandId = it.brand.id, brandName = it.brand.name) }
-        val highestPriceProducts = products.filter { it.price == highestPrice }
+        val highestPriceProducts = category.products.filter { it.price == highestPrice }
             .map { ProductPrice.Brand(id = it.id, price = it.price, brandId = it.brand.id, brandName = it.brand.name) }
 
         return CategoryResponse.PriceRange(
@@ -58,7 +54,7 @@ class CategoryProductQuery(
     }
 
     private fun findLowestPriceCategoryProducts(categories: List<Category>): List<CategoryProduct> {
-        return productRepository.findAllByCategoryIn(categories).groupBy { it.category.id }.map { (_, products) ->
+        return categories.flatMap { it.products }.groupBy { it.category.id }.map { (_, products) ->
             val lowestPriceProductByCategory = products.sortedByDescending { it.brand.id }.minBy { it.price }
             CategoryProduct(
                 categoryId = lowestPriceProductByCategory.category.id,

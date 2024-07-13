@@ -17,11 +17,11 @@ import java.time.LocalDateTime
 class Product private constructor(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id")
-    val brand: Brand,
+    var brand: Brand,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
-    val category: Category,
+    var category: Category,
 
     @Column(name = "price", nullable = false)
     var price: Int
