@@ -17,7 +17,7 @@ import java.time.LocalDateTime
 class Product private constructor(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id")
-    var brand: Brand,
+    var brand: Brand? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -38,8 +38,8 @@ class Product private constructor(
     }
 
     companion object {
-        fun create(brand: Brand, category: Category, price: Int): Product {
-            return Product(brand, category, price)
+        fun create(category: Category, price: Int): Product {
+            return Product(category = category, price = price)
         }
     }
 }

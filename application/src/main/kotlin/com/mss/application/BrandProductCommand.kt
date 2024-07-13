@@ -23,16 +23,18 @@ class BrandProductCommand(
 ) {
     fun createBrand(brandCreateParam: BrandCreateParam): BrandResponse.Base {
         validator.validateCreateBrand(brandCreateParam.name)
-        val savedBrand = brandRepository.save(Brand.create(brandCreateParam.name))
+        val brand = Brand.create(brandCreateParam.name)
 
         val categoryNames = brandCreateParam.categoryProducts.map { it.categoryName }
         validator.validateCreateProducts(categoryNames)
 
         val categoryProductParamMap = brandCreateParam.categoryProducts.associate { it.categoryName to it.productPrice }
         categoryRepository.findAllByNameIn(categoryNames).forEach { category ->
-            val product = Product.create(savedBrand, category, categoryProductParamMap[category.name]!!)
-            savedBrand.addProduct(product)
+            val product = Product.create(category, categoryProductParamMap[category.name]!!)
+            brand.addProduct(product)
         }
+
+        val savedBrand = brandRepository.save(brand)
 
         return BrandResponse.Base(
             id = savedBrand.id,

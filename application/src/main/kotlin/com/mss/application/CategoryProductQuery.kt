@@ -41,9 +41,9 @@ class CategoryProductQuery(
         val highestPrice = category.products.maxBy { it.price }.price
 
         val lowestPriceProducts = category.products.filter { it.price == lowestPrice }
-            .map { ProductPrice.Brand(id = it.id, price = it.price, brandId = it.brand.id, brandName = it.brand.name) }
+            .map { ProductPrice.Brand(id = it.id, price = it.price, brandId = it.brand!!.id, brandName = it.brand!!.name) }
         val highestPriceProducts = category.products.filter { it.price == highestPrice }
-            .map { ProductPrice.Brand(id = it.id, price = it.price, brandId = it.brand.id, brandName = it.brand.name) }
+            .map { ProductPrice.Brand(id = it.id, price = it.price, brandId = it.brand!!.id, brandName = it.brand!!.name) }
 
         return CategoryResponse.PriceRange(
             id = category.id,
@@ -55,15 +55,15 @@ class CategoryProductQuery(
 
     private fun findLowestPriceCategoryProducts(categories: List<Category>): List<CategoryProduct> {
         return categories.flatMap { it.products }.groupBy { it.category.id }.map { (_, products) ->
-            val lowestPriceProductByCategory = products.sortedByDescending { it.brand.id }.minBy { it.price }
+            val lowestPriceProductByCategory = products.sortedByDescending { it.brand!!.id }.minBy { it.price }
             CategoryProduct(
                 categoryId = lowestPriceProductByCategory.category.id,
                 categoryName = lowestPriceProductByCategory.category.name,
                 product = ProductPrice.Brand(
                     id = lowestPriceProductByCategory.id,
                     price = lowestPriceProductByCategory.price,
-                    brandId = lowestPriceProductByCategory.brand.id,
-                    brandName = lowestPriceProductByCategory.brand.name
+                    brandId = lowestPriceProductByCategory.brand!!.id,
+                    brandName = lowestPriceProductByCategory.brand!!.name
                 )
             )
         }

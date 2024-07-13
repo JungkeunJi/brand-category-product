@@ -24,7 +24,7 @@ class BrandProductQuery(
     }
 
     private fun findLowestTotalPriceBrandIn(brands: List<Brand>): BrandResponse.Detail? {
-        return brands.flatMap { it.products }.groupBy { it.brand }.map { (brand, products) ->
+        return brands.flatMap { it.products }.groupBy { it.brand!! }.map { (brand, products) ->
             val categoryProducts = products.map {
                 ProductPrice.Category(
                     id = it.id,
