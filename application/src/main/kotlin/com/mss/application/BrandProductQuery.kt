@@ -13,8 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional(readOnly = true)
 class BrandProductQuery(
-    private val brandRepository: BrandRepository,
-    private val productRepository: ProductRepository
+    private val brandRepository: BrandRepository
 ) {
     fun findLowestTotalPriceBrand(): BrandResponse.Detail {
         val brands = brandRepository.findAll()
@@ -26,7 +25,7 @@ class BrandProductQuery(
     }
 
     private fun findLowestTotalPriceBrandIn(brands: List<Brand>): BrandResponse.Detail? {
-        return productRepository.findAllByBrandIn(brands).groupBy { it.brand }.map { (brand, products) ->
+        return brands.flatMap { it.products }.groupBy { it.brand }.map { (brand, products) ->
             val categoryProducts = products.map {
                 ProductPrice.Category(
                     id = it.id,
