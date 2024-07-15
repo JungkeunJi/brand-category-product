@@ -14,8 +14,9 @@ class ExceptionHandlerAdvice {
     @ExceptionHandler(CustomException::class)
     fun customExceptionHandler(ex: CustomException): ResponseEntity<Response.Fail> {
         val errorCode = ex.errorCode
+        val message = "${errorCode.message}(${ex.data})"
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(Response.Fail.create(errorCode.code, ex.javaClass.simpleName, errorCode.message))
+            .body(Response.Fail.create(errorCode.code, ex.javaClass.simpleName, message))
     }
 
     //요청에 대한 json 파싱 문제
