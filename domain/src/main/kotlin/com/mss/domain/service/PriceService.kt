@@ -22,4 +22,20 @@ class PriceService {
                 ?: throw NotFoundDataException(errorCode = ErrorCode.NOT_FOUND_PRODUCT, data = "카테고리: ${category.name}")
         }
     }
+
+    fun findLowestPriceProducts(category: Category): List<Product> {
+        if (category.products.isEmpty()) throw NotFoundDataException(errorCode = ErrorCode.NOT_FOUND_PRODUCT)
+
+        val lowestPrice = category.products.minBy { it.price }.price
+
+        return category.products.filter { it.price == lowestPrice }
+    }
+
+    fun findHighestPriceProducts(category: Category): List<Product> {
+        if (category.products.isEmpty()) throw NotFoundDataException(errorCode = ErrorCode.NOT_FOUND_PRODUCT)
+
+        val highestPrice = category.products.maxBy { it.price }.price
+
+        return category.products.filter { it.price == highestPrice }
+    }
 }

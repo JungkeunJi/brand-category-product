@@ -43,12 +43,7 @@ class CategoryProductQuery(
         val category =
             categoryRepository.findByName(name) ?: throw NotFoundDataException(errorCode = ErrorCode.NOT_FOUND_CATEGORY)
 
-        if (category.products.isEmpty()) throw NotFoundDataException(errorCode = ErrorCode.NOT_FOUND_PRODUCT)
-
-        val lowestPrice = category.products.minBy { it.price }.price
-        val highestPrice = category.products.maxBy { it.price }.price
-
-        val lowestPriceProducts = category.products.filter { it.price == lowestPrice }
+        val lowestPriceProducts = priceService.findLowestPriceProducts(category)
             .map {
                 ProductPrice.Brand(
                     id = it.id,
@@ -57,7 +52,7 @@ class CategoryProductQuery(
                     brandName = it.brand!!.name
                 )
             }
-        val highestPriceProducts = category.products.filter { it.price == highestPrice }
+        val highestPriceProducts = priceService.findHighestPriceProducts(category)
             .map {
                 ProductPrice.Brand(
                     id = it.id,
