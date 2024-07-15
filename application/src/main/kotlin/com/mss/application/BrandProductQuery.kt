@@ -2,44 +2,34 @@ package com.mss.application
 
 import com.mss.application.model.ProductPrice
 import com.mss.application.model.response.BrandResponse
-import com.mss.domain.Brand
-import com.mss.domain.exception.ErrorCode
-import com.mss.domain.exception.NotFoundDataException
 import com.mss.domain.repository.BrandRepository
+import com.mss.domain.service.PriceService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
 class BrandProductQuery(
-    private val brandRepository: BrandRepository
+    private val brandRepository: BrandRepository,
+    private val priceService: PriceService
 ) {
     fun findLowestTotalPriceBrand(): BrandResponse.Detail {
         val brands = brandRepository.findAll()
 
-        if (brands.isEmpty()) throw NotFoundDataException(errorCode = ErrorCode.NOT_FOUND_BRAND)
+        val lowestTotalPriceBrand = priceService.findLowestTotalPriceBrand(brands)
 
-        return findLowestTotalPriceBrandIn(brands)
-            ?: throw NotFoundDataException(errorCode = ErrorCode.NOT_FOUND_PRODUCT)
-    }
-
-    private fun findLowestTotalPriceBrandIn(brands: List<Brand>): BrandResponse.Detail? {
-        return brands.flatMap { it.products }.groupBy { it.brand!! }.map { (brand, products) ->
-            val categoryProducts = products.map {
+        return BrandResponse.Detail(
+            id = lowestTotalPriceBrand.id,
+            name = lowestTotalPriceBrand.name,
+            categoryProducts = lowestTotalPriceBrand.products.map {
                 ProductPrice.Category(
                     id = it.id,
                     price = it.price,
                     categoryId = it.category.id,
                     categoryName = it.category.name
                 )
-            }
-
-            BrandResponse.Detail(
-                id = brand.id,
-                name = brand.name,
-                categoryProducts = categoryProducts,
-                totalPrice = categoryProducts.sumOf { it.price }
-            )
-        }.minByOrNull { it.totalPrice }
+            },
+            totalPrice = lowestTotalPriceBrand.products.sumOf { it.price }
+        )
     }
 }
