@@ -49,20 +49,12 @@ Content-Type: application/json
   ]
 }
 
-### 구현 4. 브랜드 및 상품 생성
+### 구현 4. 브랜드의 상품 수정
 PUT http://localhost:8080/api/brands/A
 Content-Type: application/json
 
 {
   "categoryProducts": [
-    {
-      "categoryName": "상의",
-      "productPrice": 1000
-    },
-    {
-      "categoryName": "아우터",
-      "productPrice": 2000
-    },
     {
       "categoryName": "바지",
       "productPrice": 3000
