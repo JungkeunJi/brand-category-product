@@ -467,8 +467,22 @@ Host: http://localhost:8080
 - 도메인 서비스를 통해 비즈니스 로직 처리
 
 ## 실행 및 테스트 방법
-### 자동 스키마 생성과 data.sql 로 초기 데이터 세팅 언급, embedded h2 사용 언급
-### apitest.http 로 테스트 가능
+### Application 실행
+프로젝트 터미널에서 다음 명령어를 통해 application 을 실행시킬 수 있습니다.
+```
+./gradlew -p api-rest bootRun
+```
+또는 프로젝트의 api-rest 모듈에서 BrandCategoryProductApplication 클래스의 main 함수를 통해 application 을 실행시킬 수 있습니다.
+Application 실행 시 다음 내용이 자동 수행됩니다.
+- Embedded H2 실행
+- DB 스키마 자동 생성(JPA ddl-auto: create 사용)
+- DB 테이블 데이터 초기 세팅(data.sql)
+  - data.sql 파일은 api-rest 모듈의 resources 디렉토리에 있습니다
+
+### Application 테스트
+Application 실행 후 모든 구현에 대한 API 테스트는 apitest.http 파일로 수행할 수 있습니다. apitest.http 파일은 api-rest 모듈에 있습니다.
+
+
 
 ## 기타 추가 정보
 ### 스키마 그림 + 상품/브랜드/카테고리 각 엔티티에 대한 짧은 설명
