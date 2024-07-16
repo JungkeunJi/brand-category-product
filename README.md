@@ -482,8 +482,4 @@ Application 실행 시 다음 내용이 자동 수행됩니다.
 ### Application 테스트
 Application 실행 후 모든 구현에 대한 API 테스트는 apitest.http 파일로 수행할 수 있습니다. apitest.http 파일은 api-rest 모듈에 있습니다.
 
-
-
-## 기타 추가 정보
-### 스키마 그림 + 상품/브랜드/카테고리 각 엔티티에 대한 짧은 설명
-
+## DB 스키마
