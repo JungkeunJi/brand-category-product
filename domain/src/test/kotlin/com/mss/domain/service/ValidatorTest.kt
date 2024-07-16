@@ -15,9 +15,9 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.whenever
 
 internal class ValidatorTest {
-    val brandRepository: BrandRepository = mock()
-    val categoryRepository: CategoryRepository = mock()
-    val validator = Validator(brandRepository, categoryRepository)
+    private val brandRepository: BrandRepository = mock()
+    private val categoryRepository: CategoryRepository = mock()
+    private val validator = Validator(brandRepository, categoryRepository)
 
     @Test
     fun `브랜드 생성 시 이미 존재하는 이름으로 생성 불가`() {
