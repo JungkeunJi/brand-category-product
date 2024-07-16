@@ -483,3 +483,4 @@ Application 실행 시 다음 내용이 자동 수행됩니다.
 Application 실행 후 모든 구현에 대한 API 테스트는 apitest.http 파일로 수행할 수 있습니다. apitest.http 파일은 api-rest 모듈에 있습니다.
 
 ## DB 스키마
+<img width="642" alt="스크린샷 2024-07-16 오후 4 26 00" src="https://github.com/user-attachments/assets/9ee88e46-f4c1-480e-9a16-369e66d578f0">
