@@ -5,7 +5,9 @@ import com.mss.application.model.param.BrandCreateParam
 import com.mss.application.model.param.BrandProductUpdateParam
 import com.mss.application.model.param.CategoryProductParam
 import com.mss.application.model.response.BrandResponse
+import com.mss.domain.repository.BrandRepository
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -22,6 +24,9 @@ import org.springframework.transaction.annotation.Transactional
 internal class BrandProductControllerTest {
     @Autowired
     lateinit var mockMvc: MockMvc
+
+    @Autowired
+    lateinit var brandRepository: BrandRepository
 
     val brandUrlPrefix: String = "/api/brands"
 
@@ -46,7 +51,7 @@ internal class BrandProductControllerTest {
     }
 
     @Test
-    fun `브랜드 및 상품 추가`() {
+    fun `구현 4 브랜드 및 상품 추가`() {
         val brandCreateParam = BrandCreateParam(
             "Z", listOf(
                 CategoryProductParam("상의", 1000),
@@ -81,7 +86,7 @@ internal class BrandProductControllerTest {
     }
 
     @Test
-    fun `브랜드의 상품 업데이트`() {
+    fun `구현 4 브랜드의 상품 업데이트`() {
         val brandProductUpdateParam = BrandProductUpdateParam(
             listOf(
                 CategoryProductParam("상의", 100),
@@ -115,6 +120,23 @@ internal class BrandProductControllerTest {
             brandProductUpdateParam.categoryProducts.first { it.categoryName == "아우터" }.productPrice,
             brandBaseResponse.data.categoryProducts.first { it.categoryName == "아우터" }.price
         )
+    }
+
+    @Test
+    fun `구현 4 브랜치 삭제`() {
+        val brandName = "D"
+        assertNotEquals(null, brandRepository.findByName(brandName))
+
+        mockMvc
+            .perform(
+                delete("${brandUrlPrefix}/${brandName}")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+            )
+            .andExpect(status().isOk)
+            .andReturn()
+
+        assertEquals(null, brandRepository.findByName(brandName))
     }
 
     data class BrandDetailResponseSuccess(
