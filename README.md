@@ -179,11 +179,269 @@ Host: http://localhost:8080
 </details>
 
 ### 구현 3. 카테고리 이름으로 최저, 최고 가격 브랜드와 상품 가격을 조회하는 API
+HTTP request
+```
+GET /api/categories/price-range?name=상의
+Host: http://localhost:8080
+```
+<details>
+<summary> (클릭) HTTP response </summary>
+
+``` json
+{
+  "data": {
+    "id": 1,
+    "name": "상의",
+    "lowestPriceProducts": [
+      {
+        "id": 17,
+        "price": 10000,
+        "brandId": 3,
+        "brandName": "C"
+      }
+    ],
+    "highestPriceProducts": [
+      {
+        "id": 65,
+        "price": 11400,
+        "brandId": 9,
+        "brandName": "I"
+      }
+    ]
+  }
+}
+```
+</details>
+
 ### 구현 4. 브랜드 및 상품을 추가/업데이트/삭제하는 API
+#### 브랜드 및 상품 추가
+HTTP request
+```
+POST /api/brands
+Content-Type: application/json
+Host: http://localhost:8080
+
+{
+  "name": "Z",
+  "categoryProducts": [
+    {
+      "categoryName": "상의",
+      "productPrice": 1000
+    },
+    {
+      "categoryName": "아우터",
+      "productPrice": 2000
+    },
+    {
+      "categoryName": "바지",
+      "productPrice": 3000
+    },
+    {
+      "categoryName": "스니커즈",
+      "productPrice": 4000
+    },
+    {
+      "categoryName": "가방",
+      "productPrice": 5000
+    },
+    {
+      "categoryName": "모자",
+      "productPrice": 6000
+    },
+    {
+      "categoryName": "양말",
+      "productPrice": 7000
+    },
+    {
+      "categoryName": "액세서리",
+      "productPrice": 8000
+    }
+  ]
+}
+```
+<details>
+<summary> (클릭) HTTP response </summary>
+
+``` json
+{
+  "data": {
+    "id": 10,
+    "name": "Z",
+    "categoryProducts": [
+      {
+        "id": 73,
+        "price": 5000,
+        "categoryId": 5,
+        "categoryName": "가방"
+      },
+      {
+        "id": 74,
+        "price": 6000,
+        "categoryId": 6,
+        "categoryName": "모자"
+      },
+      {
+        "id": 75,
+        "price": 3000,
+        "categoryId": 3,
+        "categoryName": "바지"
+      },
+      {
+        "id": 76,
+        "price": 1000,
+        "categoryId": 1,
+        "categoryName": "상의"
+      },
+      {
+        "id": 77,
+        "price": 4000,
+        "categoryId": 4,
+        "categoryName": "스니커즈"
+      },
+      {
+        "id": 78,
+        "price": 2000,
+        "categoryId": 2,
+        "categoryName": "아우터"
+      },
+      {
+        "id": 79,
+        "price": 8000,
+        "categoryId": 8,
+        "categoryName": "액세서리"
+      },
+      {
+        "id": 80,
+        "price": 7000,
+        "categoryId": 7,
+        "categoryName": "양말"
+      }
+    ]
+  }
+}
+```
+</details>
+
+#### 브랜드의 상품 수정
+HTTP request
+```
+PUT /api/brands/A
+Content-Type: application/json
+Host: http://localhost:8080
+
+{
+  "categoryProducts": [
+    {
+      "categoryName": "바지",
+      "productPrice": 3000
+    },
+    {
+      "categoryName": "스니커즈",
+      "productPrice": 4000
+    },
+    {
+      "categoryName": "가방",
+      "productPrice": 5000
+    },
+    {
+      "categoryName": "모자",
+      "productPrice": 6000
+    },
+    {
+      "categoryName": "양말",
+      "productPrice": 7000
+    },
+    {
+      "categoryName": "액세서리",
+      "productPrice": 8000
+    }
+  ]
+}
+```
+<details>
+<summary> (클릭) HTTP response </summary>
+
+``` json
+{
+  "data": {
+    "id": 1,
+    "name": "A",
+    "categoryProducts": [
+      {
+        "id": 1,
+        "price": 11200,
+        "categoryId": 1,
+        "categoryName": "상의"
+      },
+      {
+        "id": 2,
+        "price": 5500,
+        "categoryId": 2,
+        "categoryName": "아우터"
+      },
+      {
+        "id": 3,
+        "price": 3000,
+        "categoryId": 3,
+        "categoryName": "바지"
+      },
+      {
+        "id": 4,
+        "price": 4000,
+        "categoryId": 4,
+        "categoryName": "스니커즈"
+      },
+      {
+        "id": 5,
+        "price": 5000,
+        "categoryId": 5,
+        "categoryName": "가방"
+      },
+      {
+        "id": 6,
+        "price": 6000,
+        "categoryId": 6,
+        "categoryName": "모자"
+      },
+      {
+        "id": 7,
+        "price": 7000,
+        "categoryId": 7,
+        "categoryName": "양말"
+      },
+      {
+        "id": 8,
+        "price": 8000,
+        "categoryId": 8,
+        "categoryName": "액세서리"
+      }
+    ]
+  }
+}
+```
+</details>
+
+#### 브랜드 삭제
+HTTP request
+```
+DELETE /api/brands/A
+Host: http://localhost:8080
+```
+<details>
+<summary> (클릭) HTTP response </summary>
+
+``` json
+{
+  "data": null
+}
+```
+</details>
 
 
-### 구현4는 3개의 API 로 쪼개진거 언급(브랜드 생성, 삭제, 브랜드의 상품 수정)
-### 각 구현에 대한 api 경로와 요청, 응답값(이거는 접는기능 사용)
+
+
+
+
 
 ## 코드 빌드
 ### gradle 사용, 코틀린 버전, 스프링 버전, jpa 사용등 언급
